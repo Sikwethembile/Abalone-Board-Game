@@ -3,204 +3,128 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+ //r.update
 
-/* 
- * File:   main.cpp
- * Author: MSCS
- *
- * Created on 12 March 2020, 8:38 AM
- */
+  /*
+   * File:   main.cpp
+   * Author: MSCS
+   *
+   * Created on 12 March 2020, 8:38 AM
+   *
+   */
+   //updated
 
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
-#include <time.h>
+
+
 #include "board.h"
 #include "agent.h"
+#include <iostream>
+#include <fstream>
+
+  //using std::cout;
+  //using std::cin;
 
 
 using namespace std;
 
-int humanVbot(const char& char1){
-    if(char1 != '@' && char1 != 'O'){
-        throw string("Parameter must be O or @ only!");
-    }
-    char bot;
-    if(char1 == '@'){
-        bot = 'O';
-    }
-    else{
-        bot = '@';
-    }
-    system(CL);
-    SLP(1);
-    time_t now = time(NULL);
-    srand(now);
-    cout << "Seed: " << now << endl;
-    board abalone;
-    string state(abalone);
-    cout << "Initial State:" << endl << state; 
-    agent *w = new humanAgent(char1);
-    agent *b = new distAgent(bot);
-    movement *pom = nullptr; // previous opponent's move
-    movement *mym = nullptr; // player's chosen move
-    char c = char1;
-    int i = 1;
-    string winner = "No player";
-    while (abalone.inPlay())
-    {
-        try
-        {
-            if (c == 'O')
-            {
-                movement mm = w->move(pom, abalone);
-                mym = new movement(mm);
-                if (pom)
-                    delete pom;
-                pom = new movement(mm);
-            }
-            else
-            {
-                movement mm = b->move(pom, abalone);
-                mym = new movement(mm);
-                if (pom)
-                    delete pom;
-                pom = new movement(mm);
-            }
-        }
-        catch (const string &s)
-        {
-            cout << s;
-            return 1;
-        }
-        bool valid = abalone.executeMove(c, mym->l, mym->n, mym->fd, mym->md);
-        system(CL);
-        if (valid)
-        {
-            cout << "Move " << i << ": " << c << "," << mym->l << "," << mym->n << "," << mym->fd << "," << mym->md <<" (Bot)" << endl;
-            string state(abalone);
-            cout << "Next State:" << endl << state;
-        }
-        else
-        {
-            cout << "Invalid move!!" << endl;
-            string state(abalone);
-            cout << "Next State:" << endl << state;
-        }
-        
-        delete mym;
-        abalone.refreshOffboardCounts(winner);
-        if (c == 'O')
-            c = '@';
-        else
-            c = 'O';
-        i++;
-    }
-    if (pom)
-        delete pom;
-    delete w;
-    delete b;
-    system(CL);
-    string final_state(abalone);
-    cout << "Final State: " << endl << final_state ;
-    cout << "The total number of moves made is: " << i-1 << endl;
-    cout << winner << " wins this round of the game!" << endl;
-    return 0;
-}
-int botVbot(){
-    system(CL);
-    SLP(1);
-    time_t now = time(NULL);
-    srand(now);
-    cout << "Seed: " << now << endl;
-    board abalone;
-    string state(abalone);
-    cout << "Initial State:" << endl << state; 
-    SLP(10);
-    system(CL);
-    SLP(1);
-    agent *w = new randAgent('O');
-    agent *b = new distAgent('@');
-    movement *pom = nullptr; // previous opponent's move
-    movement *mym = nullptr; // player's chosen move
-    char c = 'O';
-    int i = 1;
-    string winner = "No player";
-    while (abalone.inPlay())
-    {
-        try
-        {
-            if (c == 'O')
-            {
-                movement mm = w->move(pom, abalone);
-                mym = new movement(mm);
-                if (pom)
-                    delete pom;
-                pom = new movement(mm);
-            }
-            else
-            {
-                movement mm = b->move(pom, abalone);
-                mym = new movement(mm);
-                if (pom)
-                    delete pom;
-                pom = new movement(mm);
-            }
-        }
-        catch (const string &s)
-        {
-            cout << s;
-            return 1;
-        }
-        bool valid = abalone.executeMove(c, mym->l, mym->n, mym->fd, mym->md);
-        string player;
-        if(i%2 == 0){
-            player = "Bot 2";
-        }
-        else{
-            player = "Bot 1";
-        }
-        cout << "Move " << i++ << ": " << c << "," << mym->l << "," << mym->n << "," << mym->fd << "," << mym->md <<"("<<player<<")"<< endl;
-        if (valid)
-        {
-            string state(abalone);
-            cout << "Next State:" << endl << state;
-            SLP(0.4);
-            system(CL);
-            SLP(0.4);
-        }
-        else
-        {
-            cout << "Invalid move!!" << endl;
-            SLP(0.1);
-            system(CL);
-            SLP(0.1);
-        }
-        if (c == 'O')
-            c = '@';
-        else
-            c = 'O';
-        delete mym;
-        abalone.refreshOffboardCounts(winner);
-        //SLP(1);
-        //system(CL);
-    }
-    if (pom)
-        delete pom;
-    delete w;
-    delete b;
-    //cout << "Seed: " << now << endl;
-    //cout << "Initial State: " << endl << initialState;
-    string final_state(abalone);
-    cout << "Final State: " << endl << final_state ;
-    cout << "The total number of moves made is: " << i-1 << endl;
-    cout << winner << " wins this round of the game!" << endl;
-    return 0;
-}
-
 int main(int argc, char** argv) {
-    int hbgame = humanVbot('O');
-    
-   // int bbgame = botVbot();
-    
+	int i = 0;
+	int input = 0;
+	char symbol = '@';
+	vector<string> statesV;//vectot to stor all states
+	vector<string> movesV;//vector to store all moves
+	string sChoice = "s";
+	double speed = 0.4;//to store user prefered speed of play
+	string newLine = "y";//to ask user whether board states shuld be printed on new line or cleared
+	bool bi = false;//
+	while (i != 3)
+	{
+
+		cout << "Welcome to the abalone board game." << endl;
+		cout << "Please select one of the options below: " << endl;
+		cout << "Press -> 1 ,to play against a bot." << endl;
+		cout << "Press -> 2 ,to watch a bot play against another bot." << endl;
+		cout << "Press -> 3 ,if you do not wish to play at all." << endl;
+		cout << "Enter input: "; //<< endl;
+		cin >> input;
+		
+		if (input != 3)
+		{
+			cout << "Clear screen after a move? [y/n]!";// << endl;
+			cin >> newLine;
+			if (newLine == "y" || newLine == "yes")
+			{
+				bi = false;
+			}
+			else if (newLine == "n" || newLine == "no")
+			{
+				bi = true;
+			}
+			while (input != 1 && input != 2)
+			{
+				cout << "Invalid input, please Enter input again. " << endl;
+				cout << "Enter input: ";
+				cin >> input;
+
+			}
+			if (input == 1)
+			{
+				cout << "You are up against a bot, are you ready?" << endl;
+				cout << "Choose your character - [@/O] ? :";// << endl;
+				cin >> symbol;
+				userVbot(symbol, statesV, movesV, bi);
+				input = 0;
+			}
+			else if (input == 2)
+			{
+
+				cout << "Press [s] for fast, [f] for slow and [sf] for super-fast speed of play:";
+				cin >> sChoice;
+				if (sChoice == "s") {
+					speed = 0.8;
+
+				}
+				else if (sChoice == "f")
+				{
+					speed = 0.3;
+
+				}
+				else if (sChoice == "sf")
+				{
+					speed = 0.0;
+
+				}
+				botVbot(statesV, movesV, speed, bi);
+				input = 0;
+			}
+			char rep = 'n';
+			cout << "Would you like to watch a replay of your game?[y/n]";cin >> rep;
+			if (rep == 'y' || rep == 'Y' ) {
+				int a = 0, b = movesV.size();
+				cout << "Enter A to watch the entire game or B to replay only a portion: ";
+				cin >> rep;
+				if (rep == 'B' || rep == 'b') {
+					cout << "At which index would you like to stop: ";cin >> a;
+					cout << "At which index would you like to start: ";cin >> b;
+				}
+				for (int i = a;i < b;i++) {
+					cout << movesV[i] << endl;
+					cout << statesV[i] << endl;
+					SLP(0.2);
+					system(CL);
+				}
+			}
+		}
+		else
+		{
+
+			cout << "Goodbye !!!" << endl;
+			break;
+		}
+
+
+	}
+
+
+
 }
